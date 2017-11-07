@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns="http://kpei.co.id/MDwsReply.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://kpei.co.id/MDwsReply.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xs:element name="wsReply">
+      <xs:annotation>
+         <xs:documentation>Comment describing your root element</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="receiveDateTime" type="xs:dateTime"/>
+            <xs:element name="status" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

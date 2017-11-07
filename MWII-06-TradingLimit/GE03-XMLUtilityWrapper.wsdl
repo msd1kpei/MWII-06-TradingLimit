@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="GE03_XMLUtility" targetNamespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="xml_data">
+      <plnk:role name="GE03-XMLUtility" portType="tns:GE03-XMLUtility"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" location="http://serviceserver:7777/soa-infra/services/default/GE03-XMLUtility/GE03-XMLUtility.wsdl"/>
+</wsdl:definitions>

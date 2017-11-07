@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="membership" adapter="Database Adapter" wsdlLocation="membership.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/ds_kpeimid" UIConnectionName="kpeimid" adapterRef=""/>
+   <endpoint-interaction portType="membership_ptt" operation="membership">
+      <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
+         <property name="SchemaName" value="KPEIMID"/>
+         <property name="PackageName" value="MW_MEMBERSHIP_PKG"/>
+         <property name="ProcedureName" value="GET_MEMBERSHIP"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+      <output/>
+   </endpoint-interaction>
+</adapter-config>

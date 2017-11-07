@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/KPEIMID/TL_ALLOC_PKG/GET_ALLOC2/" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/KPEIMID/TL_ALLOC_PKG/GET_ALLOC2/" elementFormDefault="qualified">
+   <element name="InputParameters">
+      <complexType>
+         <sequence>
+            <element name="PIN" type="db:KPEIMID.TLA_CM_OBJ_COL" db:index="1" db:type="Array" minOccurs="0" nillable="true"/>
+         </sequence>
+      </complexType>
+   </element>
+   <element name="OutputParameters">
+      <complexType>
+         <sequence>
+            <element name="POUT" type="db:KPEIMID.TLA_CM_OBJ_COL" db:index="2" db:type="Array" minOccurs="0" nillable="true"/>
+         </sequence>
+      </complexType>
+   </element>
+   <complexType name="KPEIMID.TLA_TM_OBJ">
+      <sequence>
+         <element name="TLA_TM" db:type="VARCHAR2" minOccurs="0" nillable="true">
+            <simpleType>
+               <restriction base="string">
+                  <maxLength value="64"/>
+               </restriction>
+            </simpleType>
+         </element>
+         <element name="TLA_PERCENTAGE" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="TLA_MIN" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="TLA_MAX" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="TLA_REPLACEMENT" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+      </sequence>
+   </complexType>
+   <complexType name="KPEIMID.TLA_CM_OBJ">
+      <sequence>
+         <element name="TLA_CM" db:type="VARCHAR2" minOccurs="0" nillable="true">
+            <simpleType>
+               <restriction base="string">
+                  <maxLength value="64"/>
+               </restriction>
+            </simpleType>
+         </element>
+         <element name="TLA_MARKET" db:type="VARCHAR2" minOccurs="0" nillable="true">
+            <simpleType>
+               <restriction base="string">
+                  <maxLength value="64"/>
+               </restriction>
+            </simpleType>
+         </element>
+         <element name="TLA_VALUE" type="decimal" db:type="NUMBER" minOccurs="0" nillable="true"/>
+         <element name="TLA_TM_COL" type="db:KPEIMID.TLA_TM_OBJ_COL" db:type="Array" minOccurs="0" nillable="true"/>
+      </sequence>
+   </complexType>
+   <complexType name="KPEIMID.TLA_TM_OBJ_COL">
+      <sequence>
+         <element name="TLA_TM_COL_ITEM" type="db:KPEIMID.TLA_TM_OBJ" db:type="Struct" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+      </sequence>
+   </complexType>
+   <complexType name="KPEIMID.TLA_CM_OBJ_COL">
+      <sequence>
+         <element name="PIN_ITEM" type="db:KPEIMID.TLA_CM_OBJ" db:type="Struct" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+      </sequence>
+   </complexType>
+</schema>

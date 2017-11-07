@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<composite name="MWII-06-TradingLimit" applicationName="MWII" revision="1.31" label="soa_df4b70c2-c749-4674-b69a-fbe3e01cf0c4" mode="active" state="on" home="D:\Oracle\Middleware\user_projects\domains\KPEI1\deployed-composites\MWII-06-TradingLimit_rev1.3\sca_MWII-06-TradingLimit_rev1.3\soa_df4b70c2-c749-4674-b69a-fbe3e01cf0c4" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xmlns.oracle.com/sca/1.0">
+   <import location="TradingLimitAllocationSet.wsdl" importType="wsdl" namespace="http://www.kpei.co.id/service/tradinglimit/TradingLimitAllocationSet"/>
+   <import location="AllocatedTradingLimitSet.wsdl" importType="wsdl" namespace="http://www.kpei.co.id/service/tradinglimit/AllocatedTradingLimitSet"/>
+   <import location="TradingLimitAllocationSetWrapper.wsdl" importType="wsdl" namespace="http://www.kpei.co.id/service/tradinglimit/TradingLimitAllocationSet"/>
+   <import location="AllocatedTradingLimitSetWrapper.wsdl" importType="wsdl" namespace="http://www.kpei.co.id/service/tradinglimit/AllocatedTradingLimitSet"/>
+   <import location="http://serviceserver:7777/soa-infra/services/PDCGW/PDC02-TradingLimit/TradingLimitService-v1.wsdl" importType="wsdl" namespace="kpeimid/TradingLimitService-v1"/>
+   <import location="tla_merge.wsdl" importType="wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_merge"/>
+   <import location="mi_wsWrapper.wsdl" importType="wsdl" namespace="http://www.kpei.co.id/MemberInterface"/>
+   <import location="http://serviceserver:7777/soa-infra/services/default/GE03-XMLUtility/GE03-XMLUtility.wsdl" importType="wsdl" namespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility"/>
+   <import location="membership.wsdl" importType="wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/membership"/>
+   <import location="arms_wsWrapper.wsdl" importType="wsdl" namespace="http://kpei.co.id/"/>
+   <import location="atl_lookup.wsdl" importType="wsdl" namespace="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/atl_lookup"/>
+   <import location="TradingLimitService-v1Wrapper.wsdl" importType="wsdl" namespace="kpeimid/TradingLimitService-v1"/>
+   <import location="GE03-XMLUtilityWrapper.wsdl" importType="wsdl" namespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility"/>
+   <import location="http://serviceserver:7777/soa-infra/services/MWII/ARMSServices/ARMSServices.wsdl" importType="wsdl" namespace="http://kpei.co.id/"/>
+   <import location="http://serviceserver:7777/soa-infra/services/MWII/MIServices/MIServices.wsdl" importType="wsdl" namespace="http://www.kpei.co.id/MemberInterface"/>
+   <import location="ARMSServicesWrapper.wsdl" importType="wsdl" namespace="http://kpei.co.id/"/>
+   <service name="TradingLimitAllocationSet">
+      <interface.wsdl interface="http://www.kpei.co.id/service/tradinglimit/TradingLimitAllocationSet#wsdl.interface(execute_ptt)"/>
+      <binding.ws port="http://www.kpei.co.id/service/tradinglimit/TradingLimitAllocationSet#wsdl.endpoint(TradingLimitAllocationSet/execute_pt)" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </service>
+   <service name="AllocatedTradingLimitSet">
+      <interface.wsdl interface="http://www.kpei.co.id/service/tradinglimit/AllocatedTradingLimitSet#wsdl.interface(execute_ptt)"/>
+      <binding.ws port="http://www.kpei.co.id/service/tradinglimit/AllocatedTradingLimitSet#wsdl.endpoint(AllocatedTradingLimitSet/execute_pt)" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </service>
+   <property name="auditLevel" many="false">Inherit</property>
+   <property name="validateSchema" many="false">false</property>
+   <component name="tla_bpel">
+      <implementation.bpel src="tla_bpel.bpel"/>
+      <business-events/>
+   </component>
+   <component name="xatl_bpel">
+      <implementation.bpel src="xatl_bpel.bpel"/>
+      <business-events/>
+   </component>
+   <reference name="membership">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/membership#wsdl.interface(membership_ptt)"/>
+      <binding.jca config="membership_db.jca" portType="membership_ptt"/>
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.maxInterval" type="xs:string" many="false" override="may">120</property>
+   </reference>
+   <reference name="xml_data">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+      <binding.ws port="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.endpoint(GE03-XMLUtility/GE03-XMLUtility_pt)" soapVersion="1.1" location="http://SERVICESERVER:7777/soa-infra/services/default/GE03-XMLUtility/GE03-XMLUtility?WSDL" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </reference>
+   <reference name="atl_lookup">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/atl_lookup#wsdl.interface(atl_lookup_ptt)"/>
+      <binding.jca config="atl_lookup_db.jca" portType="atl_lookup_ptt"/>
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.maxInterval" type="xs:string" many="false" override="may">120</property>
+   </reference>
+   <reference name="atl_pdc_ws">
+      <interface.wsdl interface="kpeimid/TradingLimitService-v1#wsdl.interface(kpeimidPortType-v1)"/>
+      <binding.ws port="kpeimid/TradingLimitService-v1#wsdl.endpoint(TradingLimitServicev1/kpeimidPortType-v1_pt)" soapVersion="1.1" location="http://SERVICESERVER:7777/soa-infra/services/PDCGW/PDC02-TradingLimit/TradingLimitServicev1?WSDL" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </reference>
+   <reference name="mi_ws">
+      <interface.wsdl interface="http://www.kpei.co.id/MemberInterface#wsdl.interface(MemberInterfaceServicesSoap)"/>
+      <binding.ws port="http://www.kpei.co.id/MemberInterface#wsdl.endpoint(MIServices/MemberInterfaceServicesSoap_pt)" soapVersion="1.1" location="http://SERVICESERVER:7777/soa-infra/services/MWII/MIServices/MIServices?WSDL" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </reference>
+   <reference name="arms_ws">
+      <interface.wsdl interface="http://kpei.co.id/#wsdl.interface(ServiceLimitSoap)"/>
+      <binding.ws port="http://kpei.co.id/#wsdl.endpoint(ARMSServices/ServiceLimitSoap_pt)" soapVersion="1.1" location="http://SERVICESERVER:7777/soa-infra/services/MWII/ARMSServices/ARMSServices?WSDL" streamIncomingAttachments="false" streamOutgoingAttachments="false">
+         <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+      </binding.ws>
+   </reference>
+   <reference name="tla_merge">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_merge#wsdl.interface(tla_merge_ptt)"/>
+      <binding.jca config="tla_merge_db.jca" portType="tla_merge_ptt"/>
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.maxInterval" type="xs:string" many="false" override="may">120</property>
+   </reference>
+   <wire>
+      <source.uri>TradingLimitAllocationSet</source.uri>
+      <target.uri>tla_bpel/tla_bpel_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>xatl_bpel/atl_lookup</source.uri>
+      <target.uri>atl_lookup</target.uri>
+   </wire>
+   <wire>
+      <source.uri>xatl_bpel/arms_ws</source.uri>
+      <target.uri>arms_ws</target.uri>
+   </wire>
+   <wire>
+      <source.uri>tla_bpel/mi_ws</source.uri>
+      <target.uri>mi_ws</target.uri>
+   </wire>
+   <wire>
+      <source.uri>tla_bpel/arms_ws</source.uri>
+      <target.uri>arms_ws</target.uri>
+   </wire>
+   <wire>
+      <source.uri>tla_bpel/tla_merge</source.uri>
+      <target.uri>tla_merge</target.uri>
+   </wire>
+   <wire>
+      <source.uri>tla_bpel/membership</source.uri>
+      <target.uri>membership</target.uri>
+   </wire>
+   <wire>
+      <source.uri>xatl_bpel/atl_pdc_ws</source.uri>
+      <target.uri>atl_pdc_ws</target.uri>
+   </wire>
+   <wire>
+      <source.uri>AllocatedTradingLimitSet</source.uri>
+      <target.uri>xatl_bpel/AllocatedTradingLimitSet</target.uri>
+   </wire>
+   <wire>
+      <source.uri>xatl_bpel/xml_data</source.uri>
+      <target.uri>xml_data</target.uri>
+   </wire>
+</composite>

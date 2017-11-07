@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions targetNamespace="http://kpei.co.id/" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://kpei.co.id/" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="arms_ws">
+      <plnk:role name="ServiceLimitSoap">
+         <plnk:portType name="tns:ServiceLimitSoap"/>
+      </plnk:role>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://kpei.co.id/" location="http://serviceserver:7777/soa-infra/services/MWII/ARMSServices/ARMSServices.wsdl"/>
+</wsdl:definitions>

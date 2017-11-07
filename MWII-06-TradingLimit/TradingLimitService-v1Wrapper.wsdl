@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="TradingLimitService-v1" targetNamespace="kpeimid/TradingLimitService-v1" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="kpeimid/TradingLimitService-v1" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <plnk:partnerLinkType name="atl_pdc_ws">
+      <plnk:role name="kpeimidPortType-v1" portType="tns:kpeimidPortType-v1"/>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="kpeimid/TradingLimitService-v1" location="http://serviceserver:7777/soa-infra/services/PDCGW/PDC02-TradingLimit/TradingLimitService-v1.wsdl"/>
+</wsdl:definitions>

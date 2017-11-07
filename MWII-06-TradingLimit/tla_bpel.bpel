@@ -1,0 +1,336 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Jul 05 14:44:02 ICT 2011
+  Author:  adam
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="tla_bpel"
+               targetNamespace="http://xmlns.oracle.com/kpeisoa/MWII_06_TradingLimit/tla_bpel"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/kpeisoa/MWII_06_TradingLimit/tla_bpel"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://www.kpei.co.id/service/tradinglimit/TradingLimitAllocationSet"
+               xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:ns2="http://www.kpei.co.id/schema/tradinglimit/TradingLimitAllocationSet"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns3="http://kpei.co.id/MDwsReply.xsd"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_merge"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/top/tla_merge"
+         xmlns:ns6="http://www.kpei.co.id/MemberInterface"
+         xmlns:ns7="http://kpei.co.id/"
+         xmlns:ns8="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility"
+         xmlns:ns9="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_lookup"
+         xmlns:ns10="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_refresh"
+         xmlns:ns11="http://xmlns.oracle.com/pcbpel/adapter/db/KPEIMID/TL_ALLOC_PKG/GET_ALLOC2/"
+         xmlns:ns12="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/membership"
+         xmlns:ns13="http://xmlns.oracle.com/pcbpel/adapter/db/KPEIMID/MW_MEMBERSHIP_PKG/GET_MEMBERSHIP/"
+         xmlns:ns14="http://localhost/ARMSServiceLimit/TradingLimitAllocationSet.xsd"
+         xmlns:ns16="http://www.kpei.co.id/middleware/ExpandableVariable"
+         xmlns:ns15="http://www.kpei.co.id/middleware/MiddlewareHeader"
+         xmlns:ns17="http://192.168.52.206/ServiceLimit/MDwsReply.xsd">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <import namespace="http://schemas.oracle.com/bpel/extension"
+          location="RuntimeFault.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="tla_bpel_client" partnerLinkType="ns1:tla_bpel" myRole="execute_ptt"/>
+    <partnerLink name="tla_merge" partnerLinkType="ns4:tla_merge_plt"
+                 partnerRole="tla_merge_role"/>
+    <partnerLink name="mi_ws" partnerLinkType="ns6:mi_ws"
+                 partnerRole="MemberInterfaceServicesSoap"/>
+    <partnerLink name="membership" partnerLinkType="ns12:membership_plt"
+                 partnerRole="membership_role"/>
+    <partnerLink name="arms_ws" partnerLinkType="ns7:arms_ws"
+                 partnerRole="ServiceLimitSoap"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:requestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="ns1:replyMessage"/>
+    <variable name="mergeRequest"
+              messageType="ns4:TradingLimitAllocationCollection_msg"/>
+    <variable name="miRequest"
+              messageType="ns6:SetTradingLimitAllocationSoapIn"/>
+    <variable name="miReply"
+              messageType="ns6:SetTradingLimitAllocationSoapOut"/>
+    <variable messageType="bpelx:RuntimeFaultMessage" name="FaultVar"/>
+    <variable name="memRequest" messageType="ns12:args_in_msg"/>
+    <variable name="memReply" messageType="ns12:args_out_msg"/>
+    <variable name="armsMarketRequest"
+              messageType="ns7:wsReplyMarketLimitSoapIn"/>
+    <variable name="armsMarketReply"
+              messageType="ns7:wsReplyMarketLimitSoapOut"/>
+    <variable name="armsPoolRequest" messageType="ns7:wsReplyPoolLimitSoapIn"/>
+    <variable name="armsPoolReply" messageType="ns7:wsReplyPoolLimitSoapOut"/>
+    <variable messageType="bpelx:RuntimeFaultMessage" name="miFault"/>
+    <variable messageType="bpelx:RuntimeFaultMessage" name="armsMarketFault"/>
+    <variable messageType="bpelx:RuntimeFaultMessage" name="armsPoolFault"/>
+  </variables>
+  <faultHandlers>
+    <catchAll>
+      <sequence name="seq_err">
+        <assign name="a_err">
+          <copy>
+            <from>xp20:current-dateTime()</from>
+            <to>$outputVariable.reply/ns3:receiveDateTime</to>
+          </copy>
+          <copy>
+            <from>"ERROR"</from>
+            <to>$outputVariable.reply/ns3:status</to>
+          </copy>
+          <copy>
+            <from>concat(bpws:getVariableData('miReply','parameters','/ns4:SetTradingLimitAllocationResponse/ns4:SetTradingLimitAllocationResult/ns4:description'), ' ',bpws:getVariableData('armsMarketReply','parameters','/ns2:wsReplyMarketLimitResponse/ns13:wsReplyMarketLimitResult/ns13:description'), ' ',bpws:getVariableData('armsPoolReply','parameters','/ns2:wsReplyPoolLimitResponse/ns13:wsReplyPoolLimitResult/ns13:description') )</from>
+            <to>$outputVariable.reply/ns3:description</to>
+          </copy>
+        </assign>
+        <reply name="reply_err" variable="outputVariable"
+               partnerLink="tla_bpel_client" portType="ns1:execute_ptt"
+               operation="setAllocation"/>
+      </sequence>
+    </catchAll>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in tla_bpel.wsdl) -->
+    <receive name="receiveInput" partnerLink="tla_bpel_client" portType="ns1:execute_ptt" operation="setAllocation" variable="inputVariable" createInstance="yes"/>
+
+    <!-- Generate reply to synchronous request -->
+    <assign name="as_rec_date">
+      <copy>
+        <from>xp20:current-dateTime()</from>
+        <to>$outputVariable.reply/ns3:receiveDateTime</to>
+      </copy>
+    </assign>
+    <assign name="tx_tla_mem">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:transformation"/>
+      </bpelx:annotation>
+      <copy>
+        <from>ora:doXSLTransformForDoc("xsl/tx_tla_mem_in.xsl", $inputVariable.request)</from>
+        <to variable="memRequest" part="InputParameters"/>
+      </copy>
+    </assign>
+    <invoke name="inv_membership" partnerLink="membership"
+            portType="ns12:membership_ptt" operation="membership"
+            inputVariable="memRequest" outputVariable="memReply"
+            bpelx:invokeAsDetail="no"/>
+    <assign name="as_merge">
+      <copy>
+        <from>ora:doXSLTransform('xsl/tx_tla_merge_in.xsl',ora:getOwnerDocument($inputVariable.request),'memReply.OutputParameter',$memReply.OutputParameters)</from>
+        <to>$mergeRequest.TradingLimitAllocationCollection</to>
+      </copy>
+    </assign>
+    <invoke name="inv_merge" partnerLink="tla_merge"
+            portType="ns4:tla_merge_ptt" operation="merge"
+            inputVariable="mergeRequest" bpelx:invokeAsDetail="no"/>
+    <sequence name="seq_mi">
+      <if name="If_source">
+        <documentation>not_mi</documentation>
+        <condition>xp20:upper-case(ora:getNodeValue($inputVariable.request/ns2:header/ns2:source)) != 'MI'</condition>
+        <sequence name="seq_to_mi">
+          <assign name="tx_mi_in">
+            <bpelx:annotation>
+              <bpelx:pattern patternName="bpelx:transformation"/>
+            </bpelx:annotation>
+            <copy>
+              <from>ora:doXSLTransformForDoc("xsl/tx_tla_mi.xsl", $inputVariable.request)</from>
+              <to variable="miRequest" part="parameters"/>
+            </copy>
+          </assign>
+          <invoke name="inv_mi" partnerLink="mi_ws"
+                  portType="ns6:MemberInterfaceServicesSoap"
+                  operation="SetTradingLimitAllocation"
+                  inputVariable="miRequest" outputVariable="miReply"
+                  bpelx:invokeAsDetail="no"/>
+          <if name="if_result">
+            <documentation>not_success</documentation>
+            <condition>xp20:upper-case(ora:getNodeValue($miReply.parameters/ns6:SetTradingLimitAllocationResult/ns6:status)) != 'SUCCESS'</condition>
+            <sequence name="seq_errMI">
+              <assign name="as_errMI">
+                <copy>
+                  <from>$miReply.parameters/ns6:SetTradingLimitAllocationResult/ns6:description</from>
+                  <to>$miFault.detail</to>
+                </copy>
+                <copy>
+                  <from>$miReply.parameters/ns6:SetTradingLimitAllocationResult/ns6:status</from>
+                  <to>$miFault.summary</to>
+                </copy>
+              </assign>
+              <throw name="thr_errMI" faultName="bpelx:remoteFault"
+                     faultVariable="miFault"/>
+            </sequence>
+            <else>
+              <documentation>success</documentation>
+              <empty name="ok"/>
+            </else>
+          </if>
+        </sequence>
+        <else>
+          <documentation>skip</documentation>
+          <empty name="skip"/>
+        </else>
+      </if>
+    </sequence>
+    <sequence name="seq_arms">
+      <if name="If_source">
+        <documentation>not_arms</documentation>
+        <condition>xp20:upper-case(ora:getNodeValue($inputVariable.request/ns2:header/ns2:source)) != 'ARMS'</condition>
+        <flow name="fl_market">
+          <sequence name="seq_market">
+            <assign name="tx_tla_arms_market">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/tx_tla_arms_market_in.xsl", $inputVariable.request)</from>
+                <to variable="armsMarketRequest" part="parameters"/>
+              </copy>
+            </assign>
+            <if name="If_countMarket">
+              <documentation>not_empty</documentation>
+              <condition>ora:countNodes('armsMarketRequest','parameters','ns14:tlas/ns14:body/ns14:clearingMemberAllocation') &gt; 0</condition>
+              <sequence>
+                <invoke name="inv_armsMarket" bpelx:invokeAsDetail="no"
+                        partnerLink="arms_ws" portType="ns7:ServiceLimitSoap"
+                        operation="wsReplyMarketLimit"
+                        inputVariable="armsMarketRequest"
+                        outputVariable="armsMarketReply"/>
+                <if name="If_result">
+                  <documentation>not_success</documentation>
+                  <condition>oraext:compare-ignore-case(ora:getNodeValue($armsMarketReply.parameters/ns17:wsReplyMarketLimitResult/ns17:status),'SUCCESS') != 0</condition>
+                  <sequence name="seq_errArmsMarket">
+                    <assign name="as_errArmsMarket">
+                      <copy>
+                        <from>$armsMarketReply.parameters/ns17:wsReplyMarketLimitResult/ns17:status</from>
+                        <to>$armsMarketFault.summary</to>
+                      </copy>
+                      <copy>
+                        <from>$armsMarketReply.parameters/ns17:wsReplyMarketLimitResult/ns17:description</from>
+                        <to>$armsMarketFault.detail</to>
+                      </copy>
+                    </assign>
+                    <throw name="thr_errArms" faultName="bpelx:remoteFault"
+                           faultVariable="armsMarketFault"/>
+                  </sequence>
+                  <else>
+                    <documentation>success</documentation>
+                    <empty name="skip"/>
+                  </else>
+                </if>
+              </sequence>
+              <else>
+                <documentation>is_empty</documentation>
+                <empty name="empty"/>
+              </else>
+            </if>
+          </sequence>
+          <sequence name="seq_pool">
+            <assign name="tx_tla_arms_pool">
+              <bpelx:annotation>
+                <bpelx:pattern patternName="bpelx:transformation"/>
+              </bpelx:annotation>
+              <copy>
+                <from>ora:doXSLTransformForDoc("xsl/tx_tla_arms_pool_in.xsl", $inputVariable.request)</from>
+                <to variable="armsPoolRequest" part="parameters"/>
+              </copy>
+            </assign>
+            <if name="If_countPool">
+              <documentation>not_empty</documentation>
+              <condition>ora:countNodes('armsPoolRequest','parameters','ns14:tlas/ns14:body/ns14:clearingMemberAllocation') &gt; 0</condition>
+              <sequence>
+                <invoke name="inv_armsPool" bpelx:invokeAsDetail="no"
+                        partnerLink="arms_ws" portType="ns7:ServiceLimitSoap"
+                        operation="wsReplyPoolLimit"
+                        inputVariable="armsPoolRequest"
+                        outputVariable="armsPoolReply"/>
+                <if name="If_result">
+                  <documentation>not_success</documentation>
+                  <condition>oraext:compare-ignore-case(ora:getNodeValue($armsPoolReply.parameters/ns17:wsReplyPoolLimitResult/ns17:status),'SUCCESS') != 0</condition>
+                  <sequence name="seq_errArmsPool">
+                    <assign name="as_errArmsPool">
+                      <copy>
+                        <from>$armsPoolReply.parameters/ns17:wsReplyPoolLimitResult/ns17:status</from>
+                        <to>$armsPoolFault.summary</to>
+                      </copy>
+                      <copy>
+                        <from>$armsPoolReply.parameters/ns17:wsReplyPoolLimitResult/ns17:description</from>
+                        <to>$armsPoolFault.detail</to>
+                      </copy>
+                    </assign>
+                    <throw name="thr_errArms" faultName="bpelx:remoteFault"
+                           faultVariable="armsPoolFault"/>
+                  </sequence>
+                  <else>
+                    <documentation>success</documentation>
+                    <empty name="skip"/>
+                  </else>
+                </if>
+              </sequence>
+              <else>
+                <documentation>is_empty</documentation>
+                <empty name="empty"/>
+              </else>
+            </if>
+          </sequence>
+        </flow>
+        <else>
+          <documentation>skip</documentation>
+          <empty name="skip"/>
+        </else>
+      </if>
+    </sequence>
+    <assign name="as_out">
+      <copy>
+        <from>'SUCCESS'</from>
+        <to>$outputVariable.reply/ns3:status</to>
+      </copy>
+      <copy>
+        <from>'Completed successfully'</from>
+        <to>$outputVariable.reply/ns3:description</to>
+      </copy>
+    </assign>
+    <reply name="replyOutput" partnerLink="tla_bpel_client" portType="ns1:execute_ptt" operation="setAllocation" variable="outputVariable"/>
+  </sequence>
+</process>

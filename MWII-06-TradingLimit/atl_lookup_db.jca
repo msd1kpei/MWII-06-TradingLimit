@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="atl_lookup" adapter="Database Adapter" wsdlLocation="atl_lookup.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/ds_kpeimid" UIConnectionName="kpeimid" adapterRef=""/>
+   <endpoint-interaction portType="atl_lookup_ptt" operation="atl_lookup">
+      <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">
+         <property name="SchemaName" value="KPEIMID"/>
+         <property name="PackageName" value="TL_ALLOC_PKG"/>
+         <property name="ProcedureName" value="GET_ALLOC2"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+      <output/>
+   </endpoint-interaction>
+</adapter-config>

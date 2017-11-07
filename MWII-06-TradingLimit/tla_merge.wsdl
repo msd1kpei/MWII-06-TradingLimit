@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="tla_merge" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_merge" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_merge" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:top="http://xmlns.oracle.com/pcbpel/adapter/db/top/tla_merge">
+   <plt:partnerLinkType name="tla_merge_plt">
+      <plt:role name="tla_merge_role">
+         <plt:portType name="tns:tla_merge_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/tla_merge" schemaLocation="xsd/tla_merge_table.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="TradingLimitAllocationCollection_msg">
+      <wsdl:part name="TradingLimitAllocationCollection" element="top:TradingLimitAllocationCollection"/>
+   </wsdl:message>
+   <wsdl:portType name="tla_merge_ptt">
+      <wsdl:operation name="merge">
+         <wsdl:input message="tns:TradingLimitAllocationCollection_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

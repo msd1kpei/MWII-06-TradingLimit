@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<properties>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MAX:db_column_type">NUMBER</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_0">TLA_CM</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MIN:db_column_not_null">false</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MAX:db_column_precision">0</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_CM:db_column_type">VARCHAR2</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MARKET:db_column_not_null">true</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MARKET:db_column_size">64</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MIN:db_column_type">NUMBER</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_PERCENTAGE:db_column_precision">0</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_PERCENTAGE:db_column_type">NUMBER</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_TM:db_column_type">VARCHAR2</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_REPLACEMENT:db_column_not_null">false</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_table_type">TABLE</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_PERCENTAGE:db_column_not_null">false</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_TM:db_column_not_null">true</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_CM:db_column_not_null">true</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_CM:db_column_size">64</entry>
+   <entry key="root_descriptor_alias">TRADING_LIMIT_ALLOCATION</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MIN:db_column_precision">0</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MAX:db_column_not_null">false</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_TM:db_column_size">64</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_6">TLA_REPLACEMENT</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_REPLACEMENT:db_column_type">NUMBER</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_5">TLA_MAX</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_4">TLA_MIN</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_3">TLA_PERCENTAGE</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_2">TLA_MARKET</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_REPLACEMENT:db_column_precision">0</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION.TLA_MARKET:db_column_type">VARCHAR2</entry>
+   <entry key="TRADING_LIMIT_ALLOCATION:db_column_1">TLA_TM</entry>
+</properties>

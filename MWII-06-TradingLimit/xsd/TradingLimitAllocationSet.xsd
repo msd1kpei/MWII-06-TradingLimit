@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.kpei.co.id/schema/tradinglimit/TradingLimitAllocationSet" targetNamespace="http://www.kpei.co.id/schema/tradinglimit/TradingLimitAllocationSet" elementFormDefault="qualified">
+   <xsd:include schemaLocation="MiddlewareHeader.xsd"/>
+   <xsd:include schemaLocation="ExpandableVariable.xsd"/>
+   <xsd:element name="tradingLimitAllocationSet" type="tradingLimitAllocationSet"/>
+   <xsd:complexType name="tradingLimitAllocationSet">
+      <xsd:sequence>
+         <xsd:element name="header" type="middlewareHeader"/>
+         <xsd:element name="body">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="clearingMemberAllocation" type="ClearingMemberAllocation" maxOccurs="unbounded" minOccurs="0"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="ext" type="expandableVariable"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ClearingMemberAllocation">
+      <xsd:sequence>
+         <xsd:element name="clearingMember" type="xsd:string"/>
+         <xsd:element name="market" type="xsd:string"/>
+         <xsd:element name="tradingMemberAllocationCollection">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="tradingMemberAllocation" type="TradingMemberAllocation" maxOccurs="unbounded"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TradingMemberAllocation">
+      <xsd:sequence>
+         <xsd:element name="tradingMember" type="xsd:string"/>
+         <xsd:element name="percentage" type="xsd:decimal"/>
+         <xsd:element name="min" type="xsd:decimal" minOccurs="0" nillable="true"/>
+         <xsd:element name="max" type="xsd:decimal" minOccurs="0" nillable="true"/>
+         <xsd:element name="replacement" type="xsd:decimal" minOccurs="0" nillable="true"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+   <xsd:complexType name="kpeiHeader">
+      <xsd:sequence>
+         <xsd:element name="asAt" type="xsd:dateTime">
+            <xsd:annotation>
+               <xsd:documentation>timestamp of the message</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+         <xsd:element name="sourceSystem">
+            <xsd:annotation>
+               <xsd:documentation>originating system that produced the message</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+               <xsd:restriction base="xsd:string">
+                  <xsd:maxLength value="100"/>
+               </xsd:restriction>
+            </xsd:simpleType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>id of the message</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="kpeiOutbound">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="header" type="kpeiHeader"/>
+            <xsd:element name="body">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="response" type="tradingLimit" maxOccurs="unbounded"/>
+                  </xsd:sequence>
+                  <xsd:attribute name="type" type="xsd:string"/>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="tradingLimit">
+      <xsd:sequence>
+         <xsd:element name="value" type="xsd:decimal">
+            <xsd:annotation>
+               <xsd:documentation>the value of the trading limit</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="market" type="Market" use="required">
+         <xsd:annotation>
+            <xsd:documentation>the market that the trading limit applies to</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+      <xsd:attribute name="memberId" use="required" type="xsd:string">
+         <xsd:annotation>
+            <xsd:documentation>the member that the limit is for</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:simpleType name="Market">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="Equity"/>
+         <xsd:enumeration value="SBL"/>
+         <xsd:enumeration value="Fixed Income"/>
+         <xsd:enumeration value="Derivative"/>
+         <xsd:enumeration value="Pool"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+</xsd:schema>

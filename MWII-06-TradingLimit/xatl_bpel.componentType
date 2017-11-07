@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="AllocatedTradingLimitSet" ui:wsdlLocation="AllocatedTradingLimitSetWrapper.wsdl">
+      <interface.wsdl interface="http://www.kpei.co.id/service/tradinglimit/AllocatedTradingLimitSet#wsdl.interface(execute_ptt)"/>
+   </service>
+   <reference name="atl_pdc_ws" ui:wsdlLocation="TradingLimitService-v1Wrapper.wsdl">
+      <interface.wsdl interface="kpeimid/TradingLimitService-v1#wsdl.interface(kpeimidPortType-v1)"/>
+   </reference>
+   <reference name="xml_data" ui:wsdlLocation="GE03-XMLUtilityWrapper.wsdl">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+   </reference>
+   <reference name="arms_ws" ui:wsdlLocation="ARMSServicesWrapper.wsdl">
+      <interface.wsdl interface="http://kpei.co.id/#wsdl.interface(ServiceLimitSoap)"/>
+   </reference>
+   <reference name="atl_lookup" ui:wsdlLocation="atl_lookup.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/atl_lookup#wsdl.interface(atl_lookup_ptt)"/>
+   </reference>
+</componentType>

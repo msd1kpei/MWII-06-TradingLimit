@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/tla_merge" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/tla_merge" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="TradingLimitAllocationCollection" type="TradingLimitAllocationCollection"/>
+   <xs:complexType name="TradingLimitAllocationCollection">
+      <xs:sequence>
+         <xs:element name="TradingLimitAllocation" type="TradingLimitAllocation" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="TradingLimitAllocation">
+      <xs:sequence>
+         <xs:element name="tlaCm">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="64"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="tlaTm">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="64"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="tlaMarket">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:maxLength value="64"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="tlaPercentage" type="xs:decimal" minOccurs="0" nillable="true"/>
+         <xs:element name="tlaMin" type="xs:decimal" minOccurs="0" nillable="true"/>
+         <xs:element name="tlaMax" type="xs:decimal" minOccurs="0" nillable="true"/>
+         <xs:element name="tlaReplacement" type="xs:decimal" minOccurs="0" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>
