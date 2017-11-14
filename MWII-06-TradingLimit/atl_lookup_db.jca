@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<adapter-config name="atl_lookup" adapter="Database Adapter" wsdlLocation="atl_lookup.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+<?xml version="1.0" encoding="UTF-8"?>
+<adapter-config name="atl_lookup" adapter="db" wsdlLocation="atl_lookup.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
    <connection-factory location="eis/DB/ds_kpeimid" UIConnectionName="kpeimid" adapterRef=""/>
    <endpoint-interaction portType="atl_lookup_ptt" operation="atl_lookup">
       <interaction-spec className="oracle.tip.adapter.db.DBStoredProcedureInteractionSpec">

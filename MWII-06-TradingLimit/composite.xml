@@ -30,12 +30,51 @@
    </service>
    <property name="auditLevel" many="false">Inherit</property>
    <property name="validateSchema" many="false">false</property>
+   <property name="originalProductVersion" type="xs:string" many="false">11.0.0.0.0</property>
+   <property name="productVersion" type="xs:string" many="false">12.2.1.3.0.170820</property>
+   <property name="compositeID" type="xs:string" many="false">5d3cb25e-d8c5-4b78-9d35-bdfd3f236dbd</property>
    <component name="tla_bpel">
       <implementation.bpel src="tla_bpel.bpel"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="tla_bpel_client" ui:wsdlLocation="TradingLimitAllocationSetWrapper.wsdl">
+            <interface.wsdl interface="http://www.kpei.co.id/service/tradinglimit/TradingLimitAllocationSet#wsdl.interface(execute_ptt)"/>
+         </service>
+         <reference name="tla_merge" ui:wsdlLocation="tla_merge.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/tla_merge#wsdl.interface(tla_merge_ptt)"/>
+         </reference>
+         <reference name="mi_ws" ui:wsdlLocation="mi_wsWrapper.wsdl">
+            <interface.wsdl interface="http://www.kpei.co.id/MemberInterface#wsdl.interface(MemberInterfaceServicesSoap)"/>
+         </reference>
+         <reference name="membership" ui:wsdlLocation="membership.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/membership#wsdl.interface(membership_ptt)"/>
+         </reference>
+         <reference name="arms_ws" ui:wsdlLocation="arms_wsWrapper.wsdl">
+            <interface.wsdl interface="http://kpei.co.id/#wsdl.interface(ServiceLimitSoap)"/>
+         </reference>
+      </componentType>
       <business-events/>
    </component>
    <component name="xatl_bpel">
       <implementation.bpel src="xatl_bpel.bpel"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="AllocatedTradingLimitSet" ui:wsdlLocation="AllocatedTradingLimitSetWrapper.wsdl">
+            <interface.wsdl interface="http://www.kpei.co.id/service/tradinglimit/AllocatedTradingLimitSet#wsdl.interface(execute_ptt)"/>
+         </service>
+         <reference name="atl_pdc_ws" ui:wsdlLocation="TradingLimitService-v1Wrapper.wsdl">
+            <interface.wsdl interface="kpeimid/TradingLimitService-v1#wsdl.interface(kpeimidPortType-v1)"/>
+         </reference>
+         <reference name="xml_data" ui:wsdlLocation="GE03-XMLUtilityWrapper.wsdl">
+            <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+         </reference>
+         <reference name="arms_ws" ui:wsdlLocation="ARMSServicesWrapper.wsdl">
+            <interface.wsdl interface="http://kpei.co.id/#wsdl.interface(ServiceLimitSoap)"/>
+         </reference>
+         <reference name="atl_lookup" ui:wsdlLocation="atl_lookup.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/kpeisoa/MWII-06-TradingLimit/atl_lookup#wsdl.interface(atl_lookup_ptt)"/>
+         </reference>
+      </componentType>
       <business-events/>
    </component>
    <reference name="membership">

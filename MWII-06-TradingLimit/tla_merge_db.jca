@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<adapter-config name="tla_merge" adapter="Database Adapter" wsdlLocation="tla_merge.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+<?xml version="1.0" encoding="UTF-8"?>
+<adapter-config name="tla_merge" adapter="db" wsdlLocation="tla_merge.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
    <connection-factory location="eis/DB/ds_kpeimid" UIConnectionName="kpeimid" adapterRef=""/>
    <endpoint-interaction portType="tla_merge_ptt" operation="merge">
       <interaction-spec className="oracle.tip.adapter.db.DBWriteInteractionSpec">
